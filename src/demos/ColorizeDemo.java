@@ -26,7 +26,7 @@ import javax.swing.Timer;
 public class ColorizeDemo {
 
     static JFrame window;
-    static Display screen;
+    static ColorizeDemoDisplay screen;
     
 
     public static void main(String[] args) {
@@ -38,7 +38,7 @@ public class ColorizeDemo {
         window.setBounds(0, 0, 500, 700);
         
 
-        screen = new Display(window);
+        screen = new ColorizeDemoDisplay(window);
         Container c = window.getContentPane();
         c.setLayout(new GridLayout());
         c.add("unamed", screen);
@@ -49,7 +49,7 @@ public class ColorizeDemo {
     }
 }
 
-class Display extends JPanel implements ActionListener {
+class ColorizeDemoDisplay extends JPanel implements ActionListener {
 
     static ImageIcon gardieIcon; 
     static BufferedImage gardieImage, gardieColored, gardieFiltered;
@@ -61,7 +61,7 @@ class Display extends JPanel implements ActionListener {
         createColorizeOp((short)freeze.getRed(), (short)freeze.getGreen(), (short)freeze.getBlue());
     
    
-    public Display(Container p) {
+    public ColorizeDemoDisplay(Container p) {
         gardieIcon = new ImageIcon(gardieLocation);
         setBackground(Color.LIGHT_GRAY);
         

@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "WavPlayerDemo",
+            "request": "launch",
+            "mainClass": "demos.WavPlayerDemo",
+            "projectName": "plants-vs-fairies_2ab71e54"
+        },
+        {
+            "type": "java",
+            "name": "RotationDemo",
+            "request": "launch",
+            "mainClass": "demos.RotationDemo",
+            "projectName": "plants-vs-fairies_2ab71e54"
+        },
+        {
+            "type": "java",
+            "name": "ColorizeDemo",
+            "request": "launch",
+            "mainClass": "demos.ColorizeDemo",
+            "projectName": "plants-vs-fairies_2ab71e54"
+        }
+        
+    ]
+}
