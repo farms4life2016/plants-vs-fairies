@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ColorizeDemo",
+            "request": "launch",
+            "mainClass": "demos.ColorizeDemo",
+            "projectName": "plants-vs-fairies_c93edf52"
+        },
+        {
+            "type": "java",
+            "name": "TraceDemo",
+            "request": "launch",
+            "mainClass": "demos.TraceDemo",
+            "projectName": "plants-vs-fairies_c93edf52"
+        },
+        {
+            "type": "java",
             "name": "WavPlayerDemo",
             "request": "launch",
             "mainClass": "demos.WavPlayerDemo",
@@ -21,6 +35,5 @@
             "mainClass": "demos.ColorizeDemo",
             "projectName": "plants-vs-fairies_2ab71e54"
         }
-        
     ]
 }
