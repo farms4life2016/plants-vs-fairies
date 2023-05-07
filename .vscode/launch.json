@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TraceDemo",
+            "request": "launch",
+            "mainClass": "demos.TraceDemo",
+            "projectName": "plants-vs-fairies_2cb52f44"
+        },
+        {
+            "type": "java",
+            "name": "CartoonizeDemo",
+            "request": "launch",
+            "mainClass": "demos.CartoonizeDemo",
+            "projectName": "plants-vs-fairies_2cb52f44"
+        },
+        {
+            "type": "java",
             "name": "ColorizeDemo",
             "request": "launch",
             "mainClass": "demos.ColorizeDemo",
