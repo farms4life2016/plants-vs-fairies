@@ -53,7 +53,7 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
 
     static BufferedImage gardieImage, gardieTraced;
     static Timer fps;
-    static final String gardieLocation = "sprites\\blender_gardie.png";
+    static final String gardieLocation = "sprites\\blender_braixen.png";
     
    
     public TraceDemoDisplay(Container p) {
