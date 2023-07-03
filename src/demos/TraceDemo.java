@@ -6,14 +6,13 @@ import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Point;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
-import java.util.TreeSet;
+
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -24,7 +23,6 @@ public class TraceDemo {
 
     static JFrame window;
     static TraceDemoDisplay screen;
-    
 
     public static void main(String[] args) {
 
@@ -53,7 +51,8 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
 
     static BufferedImage gardieImage, gardieTraced, gardieFiltered;
     static Timer fps;
-    static final String gardieLocation = "sprites\\blender_braixen.png";
+    static final String folder = "sprites\\";
+    static final String imageName = folder + "braixen_pose1";
     
    
     public TraceDemoDisplay(Container p) {
@@ -61,9 +60,9 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
         
         try {
             // this is how you can read in from an image file:
-            gardieImage = ImageIO.read(new File(gardieLocation));
-            gardieTraced = ImageIO.read(new File(gardieLocation));
-            gardieFiltered = ImageIO.read(new File(gardieLocation));
+            gardieImage = ImageIO.read(new File(imageName + ".png"));
+            gardieTraced = ImageIO.read(new File(imageName + ".png"));
+            gardieFiltered = ImageIO.read(new File(imageName + ".png"));
 
             traceImage(gardieTraced);
 
@@ -108,13 +107,21 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
             for (int y = 0; y < height; y++) {
                 Color c = new Color(image.getRGB(x, y), true);
                 if (0 < c.getAlpha() && c.getAlpha() < 255) {
-                    image.setRGB(x, y, 0xFF000000);
+                    // black:    0xFF000000
+                    // 50% gray: 0xFF646464
+                    image.setRGB(x, y, 0xFF646464); 
                 }
                 // System.out.println(image.getRGB(x, y));
             }
         }
         try {
-            ImageIO.write(image, "png", new File("sprites\\traced_braixen.png"));
+            File f = new File(imageName + "_traced.png");
+            boolean permissive = false; // set to true to enable output file overwriting existing files.
+
+            if (!f.exists() || permissive)
+                ImageIO.write(image, "png", f);
+            else 
+                System.out.println("WARNING! file " + f.getName() + " already exists! Program is set to not override existing files!");
         } catch (IOException e) {
             e.printStackTrace();
         }
