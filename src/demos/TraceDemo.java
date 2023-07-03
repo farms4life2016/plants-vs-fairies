@@ -64,10 +64,10 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
             gardieImage = ImageIO.read(new File(imageName + ".png"));
             gardieTraced = ImageIO.read(new File(imageName + ".png"));
 
-            traceImage(gardieImage, null);
-            traceImage(gardieTraced, null);
+            // traceImage(gardieImage, null);
+            silhouette(gardieTraced, "silhouette_pose1.png");
 
-            doubleTrace(gardieTraced, null);
+            // doubleTrace(gardieTraced, null);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -99,7 +99,7 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
     }
 
     public static void traceImage(BufferedImage image) {
-        traceImage(image, "sprites\\traced_braixen.png");
+        traceImage(image, null);
     }
 
     /**
@@ -117,10 +117,10 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
                 Color c = new Color(image.getRGB(x, y), true);
-                if (0 < c.getAlpha() && c.getAlpha() < 255) {
+                if (0 < c.getAlpha() && c.getAlpha() < 255) { 
                     // black:    0xFF000000
                     // 50% gray: 0xFF646464
-                    image.setRGB(x, y, 0xFF646464); 
+                    image.setRGB(x, y, 0xFF000000); 
 
                     pxChanged++;
                 }
@@ -128,7 +128,45 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
             }
         }
         try {
-            File f = new File(imageName + "_traced.png");
+            String name = imageName + "_traced.png";
+            if (filename != null) name = folder + filename;
+            File f = new File(name);
+            boolean permissive = false; // set to true to enable output file overwriting existing files.
+
+            if (!f.exists() || permissive)
+                ImageIO.write(image, "png", f);
+            else 
+                System.out.println("WARNING! file " + f.getName() + " already exists! Program is set to not override existing files!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return pxChanged;
+        
+    }
+
+    public static int silhouette(BufferedImage image, String filename) {
+        
+        final int WIDTH = image.getWidth();
+        final int HEIGHT = image.getHeight();
+        int pxChanged = 0;
+
+        // my plan is to loop through every pixel
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = 0; y < HEIGHT; y++) {
+                Color c = new Color(image.getRGB(x, y), true);
+                if (0 < c.getAlpha()) { // change every non-transparent pixel to black (or whatever colour you specify)
+                    image.setRGB(x, y, 0xFF000000); 
+
+                    pxChanged++;
+                }
+                // System.out.println(image.getRGB(x, y));
+            }
+        }
+        try {
+            String name = imageName + "_silhouetted.png";
+            if (filename != null) name = folder + filename;
+            File f = new File(name);
             boolean permissive = false; // set to true to enable output file overwriting existing files.
 
             if (!f.exists() || permissive)
