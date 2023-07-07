@@ -24,7 +24,6 @@ public class TraceDemo {
 
     static JFrame window;
     static TraceDemoDisplay screen;
-    
 
     public static void main(String[] args) {
 
@@ -53,9 +52,8 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
 
     static BufferedImage gardieImage, gardieTraced;
     static Timer fps;
-    static final String BASE_NAME = "braixen_idle1_v1.1";
-    static final String INPUT_LOCATION = "sprites\\" + BASE_NAME + ".png";
-    // static final String OUTPUT_LOCATION = "sprites\\" + BASE_NAME + ".png";
+    static final String folder = "sprites\\";
+    static final String imageName = folder + "braixen_pose1";
     
    
     public TraceDemoDisplay(Container p) {
@@ -63,12 +61,13 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
         
         try {
             // this is how you can read in from an image file:
-            gardieImage = ImageIO.read(new File(INPUT_LOCATION));
-            gardieTraced = ImageIO.read(new File(INPUT_LOCATION));
+            gardieImage = ImageIO.read(new File(imageName + ".png"));
+            gardieTraced = ImageIO.read(new File(imageName + ".png"));
 
-            traceImage(gardieImage, "sprites\\" + BASE_NAME + "_trace1.png");
-            traceImage(gardieTraced, null);
-            doubleTrace(gardieTraced, "sprites\\" + BASE_NAME + "_trace2.png");
+            // traceImage(gardieImage, null);
+            silhouette(gardieTraced, "silhouette_pose1.png");
+
+            // doubleTrace(gardieTraced, null);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -99,6 +98,10 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
         }
     }
 
+    public static void traceImage(BufferedImage image) {
+        traceImage(image, null);
+    }
+
     /**
      * traces/outlines a given image by mutating all semi-transparent pixels to black
      * @param image
@@ -114,28 +117,71 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
                 Color c = new Color(image.getRGB(x, y), true);
-                if (0 < c.getAlpha() && c.getAlpha() < 255) {
-                    image.setRGB(x, y, Color.BLACK.getRGB());
+                if (0 < c.getAlpha() && c.getAlpha() < 255) { 
+                    // black:    0xFF000000
+                    // 50% gray: 0xFF646464
+                    image.setRGB(x, y, 0xFF000000); 
+
                     pxChanged++;
                 }
                 // System.out.println(image.getRGB(x, y));
             }
         }
+        try {
+            String name = imageName + "_traced.png";
+            if (filename != null) name = folder + filename;
+            File f = new File(name);
+            boolean permissive = false; // set to true to enable output file overwriting existing files.
 
-        // if filename is not null, write image to output file
-        if (filename != null) {
-            try {
-                ImageIO.write(image, "png", new File(filename));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            if (!f.exists() || permissive)
+                ImageIO.write(image, "png", f);
+            else 
+                System.out.println("WARNING! file " + f.getName() + " already exists! Program is set to not override existing files!");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return pxChanged;
         
     }
 
-    /**
+    public static int silhouette(BufferedImage image, String filename) {
+        
+        final int WIDTH = image.getWidth();
+        final int HEIGHT = image.getHeight();
+        int pxChanged = 0;
+
+        // my plan is to loop through every pixel
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = 0; y < HEIGHT; y++) {
+                Color c = new Color(image.getRGB(x, y), true);
+                if (0 < c.getAlpha()) { // change every non-transparent pixel to black (or whatever colour you specify)
+                    image.setRGB(x, y, 0xFF000000); 
+
+                    pxChanged++;
+                }
+                // System.out.println(image.getRGB(x, y));
+            }
+        }
+        try {
+            String name = imageName + "_silhouetted.png";
+            if (filename != null) name = folder + filename;
+            File f = new File(name);
+            boolean permissive = false; // set to true to enable output file overwriting existing files.
+
+            if (!f.exists() || permissive)
+                ImageIO.write(image, "png", f);
+            else 
+                System.out.println("WARNING! file " + f.getName() + " already exists! Program is set to not override existing files!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return pxChanged;
+        
+    }
+
+     /**
      * actually tries to trace an image
      * @param image
      * @param name
@@ -231,3 +277,7 @@ class Point implements Comparator<Point>, Comparable<Point> {
         return compare(this, o);
     }
 }
+
+
+
+
