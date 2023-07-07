@@ -53,7 +53,9 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
 
     static BufferedImage gardieImage, gardieTraced;
     static Timer fps;
-    static final String gardieLocation = "sprites\\blender_braixen.png";
+    static final String BASE_NAME = "braixen_idle1_v1.1";
+    static final String INPUT_LOCATION = "sprites\\" + BASE_NAME + ".png";
+    // static final String OUTPUT_LOCATION = "sprites\\" + BASE_NAME + ".png";
     
    
     public TraceDemoDisplay(Container p) {
@@ -61,13 +63,12 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
         
         try {
             // this is how you can read in from an image file:
-            gardieImage = ImageIO.read(new File(gardieLocation));
-            gardieTraced = ImageIO.read(new File(gardieLocation));
+            gardieImage = ImageIO.read(new File(INPUT_LOCATION));
+            gardieTraced = ImageIO.read(new File(INPUT_LOCATION));
 
-            traceImage(gardieImage, null);
+            traceImage(gardieImage, "sprites\\" + BASE_NAME + "_trace1.png");
             traceImage(gardieTraced, null);
-
-            doubleTrace(gardieTraced, null);
+            doubleTrace(gardieTraced, "sprites\\" + BASE_NAME + "_trace2.png");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -98,10 +99,6 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
         }
     }
 
-    public static void traceImage(BufferedImage image) {
-        traceImage(image, "sprites\\traced_braixen.png");
-    }
-
     /**
      * traces/outlines a given image by mutating all semi-transparent pixels to black
      * @param image
@@ -128,7 +125,7 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
         // if filename is not null, write image to output file
         if (filename != null) {
             try {
-                ImageIO.write(image, "png", new File("sprites\\traced_braixen.png"));
+                ImageIO.write(image, "png", new File(filename));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -196,7 +193,7 @@ class TraceDemoDisplay extends JPanel implements ActionListener {
         // if filename is not null, write image to output file
         if (name != null) {
             try {
-                ImageIO.write(image, "png", new File("sprites\\traced_braixen.png"));
+                ImageIO.write(image, "png", new File(name));
             } catch (IOException e) {
                 e.printStackTrace();
             }
